@@ -1,0 +1,42 @@
+{
+  "name": "self-healing-ci-cd-pipeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "mocha --import=tsx tests/**/*.test.ts",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faiz1996khan/Self-healing-ci-cd-pipeline.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/faiz1996khan/Self-healing-ci-cd-pipeline/issues"
+  },
+  "homepage": "https://github.com/faiz1996khan/Self-healing-ci-cd-pipeline#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^26.2.0",
+    "chai": "^6.2.2",
+    "eslint": "^10.8.1",
+    "mocha": "^11.8.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "octokit": "^5.0.5",
+    "openai": "^7.4.0",
+    "simple-git": "^3.36.0"
+  }
+}
