@@ -19,6 +19,5 @@ export function divide(a: number, b: number): number {
 
 export function brokenCalculation(): string {
   const result: number = add(10, 20);
-
   return result;
 }

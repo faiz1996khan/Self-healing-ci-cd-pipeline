@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "mocha --import=tsx tests/**/*.test.ts",
-    "lint": "eslint"
+    "lint": "eslint",
+    "detect": "tsx src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -35,7 +36,6 @@
   },
   "dependencies": {
     "dotenv": "^17.4.2",
-    "octokit": "^5.0.5",
     "openai": "^7.4.0",
     "simple-git": "^3.36.0"
   }
