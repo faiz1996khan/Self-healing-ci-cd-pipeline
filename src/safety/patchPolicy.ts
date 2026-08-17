@@ -1,6 +1,7 @@
-import type { Patch } from "../models/patch.js";
+import type { Patch } from "../models/patch";
+import { config } from "../config";
 
-const PROTECTED_PATHS:string[] = [".github/workflows/**"];
+const PROTECTED_PATHS:string[] = config.protectedPaths.split(",");
 
 const MAX_FILES_CHANGED = 5;
 

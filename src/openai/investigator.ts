@@ -70,7 +70,7 @@ export async function investigate(): Promise<Diagnosis> {
         throw new Error("Empty diagnosis returned")
     }
     
-    const diagnosis = JSON.parse(rawOutput) as any;
+    const diagnosis = JSON.parse(rawOutput) as unknown;
     validateDiagnosis(diagnosis);
     return diagnosis;
 }

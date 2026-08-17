@@ -9,7 +9,8 @@
     "start": "node dist/index.js",
     "test": "mocha --import=tsx tests/**/*.test.ts",
     "lint": "eslint",
-    "detect": "tsx src/index.ts"
+    "detect": "tsx src/index.ts",
+    "webhook": "tsx src/webhook/server.ts"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "@eslint/js": "^10.0.1",
     "@types/chai": "^5.2.3",
     "@types/diff": "^7.0.2",
+    "@types/express": "^5.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.2.0",
     "chai": "^6.2.2",
@@ -38,6 +40,7 @@
   "dependencies": {
     "diff": "^9.0.0",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "openai": "^7.4.0",
     "simple-git": "^3.36.0"
   }
