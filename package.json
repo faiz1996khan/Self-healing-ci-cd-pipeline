@@ -26,6 +26,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/chai": "^5.2.3",
+    "@types/diff": "^7.0.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.2.0",
     "chai": "^6.2.2",
@@ -35,6 +36,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "diff": "^9.0.0",
     "dotenv": "^17.4.2",
     "openai": "^7.4.0",
     "simple-git": "^3.36.0"

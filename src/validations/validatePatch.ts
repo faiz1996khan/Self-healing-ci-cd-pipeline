@@ -27,7 +27,10 @@ export function validatePath(value:unknown): asserts value is Patch{
         const patchFile = file as Record<string, unknown>; 
         if(typeof patchFile.path !== "string"){ 
             throw new Error( "Patch file path must be a string" );
-        } 
+        }
+        if ( typeof patchFile.originalContent !== "string" ){ 
+            throw new Error( "Patch originalContent must be a string." ); 
+        }
         if(typeof patchFile.diff !== "string"){ 
             throw new Error( "Patch file diff must be a string" );
         } 

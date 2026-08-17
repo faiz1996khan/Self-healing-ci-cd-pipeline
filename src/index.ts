@@ -1,5 +1,7 @@
 import { investigate } from "./openai/investigator";
 import { generatePatch } from "./openai/patchGenerator";
+import { applyPatchSet } from "./remediation/patcher";
+import { validatePatchPolicy } from "./safety/patchPolicy";
 import { evaluateRemediation } from "./safety/policy";
 
 async function main(): Promise<void> {
@@ -40,6 +42,20 @@ async function main(): Promise<void> {
     console.log( `\n${file.path}` );
     console.log(file.diff);
   }
+
+  console.log(`\n============ PATCH POLICY =================\n`);
+  validatePatchPolicy(patch);
+  console.log(`\n Patch passed safety policy\n`);
+
+  const fileContents = new Map(patch.files.map(file => [file.path,file.originalContent]));
+  const appliedFile = applyPatchSet(patch.files,fileContents)
+
+  console.log(`\n============== PATCH RESULT ===============\n`);
+  for(const file of appliedFile){
+    console.log(`Patch successfully applied: ${file.path}`);
+  }
+  console.log("\n Patch is ready.");
+
 
 }
 

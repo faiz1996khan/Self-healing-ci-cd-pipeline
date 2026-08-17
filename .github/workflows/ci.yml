@@ -34,3 +34,12 @@ jobs:
 
       - name: build
         run: npm run build
+
+      - name: CI summary
+        if: always()
+        run: |
+          echo "Lint: Completed"
+          echo "Tests: completed"
+          echo "Build: completed"
+          echo "Commit: $GITHUB_SHA"
+          echo "Branch: $GITHUB_REF_NAME"

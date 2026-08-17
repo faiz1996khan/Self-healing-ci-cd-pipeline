@@ -14,12 +14,15 @@ export const patchSchema = {
                 properties: { 
                     path: { 
                         type: "string" 
-                    }, 
+                    },
+                    originalContent: { 
+                        type: "string" 
+                    },
                     diff: { 
                         type: "string" 
                     } 
                 }, 
-                required: [ "path", "diff" ], 
+                required: [ "path", "originalContent", "diff" ], 
                 additionalProperties: false 
             } 
         }, 
