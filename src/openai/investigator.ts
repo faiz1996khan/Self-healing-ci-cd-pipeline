@@ -3,8 +3,9 @@ import { config } from "../config"
 import { diagnosisSchema } from "../schema/diagnosisSchema";
 import { Diagnosis } from "../models/diagnosis";
 import { validateDiagnosis } from "../validations/validateDiagnosis";
+import { Incident } from "../models/incident";
 
-export async function investigate(): Promise<Diagnosis> {
+export async function investigate(context:Incident): Promise<Diagnosis> {
     const response = await openai.responses.create({
         model: config.openaiModel,
         instructions:`
@@ -12,19 +13,26 @@ export async function investigate(): Promise<Diagnosis> {
 
             You have read-only access to Guthub through the Github MCP server.
 
+            Investigate GitHub Actions workflow run:
+
             Repository:${config.githubOwner}/${config.githubRepo}
 
+            Workflow Run ID:${context.workflowRunId}
+
+            Branch:${context.branch}
+
+            commit:${context.commitSha}
+
             Your responsibilities: 
-            1. Find the latest failed GitHub Actions workflow. 
-            2. Identify the failed job. 
-            3. Identify the failed step. 
-            4. Inspect the relevant logs. 
-            5. Inspect relevant repository files if needed. 
-            6. Determine the most likely root cause. 
-            7. Determine whether the failure is safely fixable. 
-            8. Classify the failure. 
-            9. Estimate confidence from 0 to 1. 
-            10. Assign a risk level.
+            1. Identify the failed job. 
+            2. Identify the failed step. 
+            3. Inspect the relevant logs. 
+            4. Inspect relevant repository files if needed. 
+            5. Determine the most likely root cause. 
+            6. Determine whether the failure is safely fixable. 
+            7. Classify the failure. 
+            8. Estimate confidence from 0 to 1. 
+            9. Assign a risk level.
 
             Important rules: 
             ** - Do not modify the repository. ** 

@@ -9,7 +9,7 @@ export interface WorkflowRun {
 
 export interface WorkflowRunWebhookPayload {
     action: "requested" | "in_progress" | "completed";
-    workflow_run: WorkflowRun;
+    workflow_job: WorkflowRun;
     repository: {
         full_name: string;
     }
