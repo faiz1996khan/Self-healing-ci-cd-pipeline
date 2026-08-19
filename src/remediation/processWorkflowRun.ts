@@ -62,7 +62,9 @@ export async function processWorkflowRun(payload:WorkflowRunWebhookPayload):Prom
     }
 
     updateIncident(incident.id,{status: "PATCHING"});
+    console.log('generating patch')
     const patch = await generatePatch(diagnosis);
+    console.log(JSON.stringify(patch))
     for (const file of patch.files) {
         console.log(`\nFile: ${file.path}`);
         console.log(file.diff);

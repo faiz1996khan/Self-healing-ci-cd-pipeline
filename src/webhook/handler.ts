@@ -45,6 +45,7 @@ export function handleWebhook(rawBody:string,headers:IncomingHttpHeaders):{statu
         console.log( "\nCI FAILURE DETECTED" ); 
         setImmediate(() => {
             processWorkflowRun(payload).catch((error:unknown) => {
+                console.log(JSON.stringify(error))
                 console.error("Self healing processor failed");
             })
         });
