@@ -20,6 +20,6 @@ export const patchApplicationSchema = {
             type: "string"
         }
     }, 
-    required: ["success","branch","modifiedFiles","message"], 
+    required: ["success","branch","commitSha","modifiedFiles","message"], 
     additionalProperties: false 
 } as const;

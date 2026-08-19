@@ -10,7 +10,7 @@ export async function patchApplier(incident:Incident,patch:Patch): Promise<Patch
         throw new Error( "Cannot apply Patch" ); 
     }
     if (patch.files.length === 0){ 
-        throw new Error( "Patch does not contain any files." ); 
+        throw new Error( "Patch does not contain any files" ); 
     }
     const approvedFiles = patch.files.map(file => ({
         path: file.path,
@@ -135,7 +135,7 @@ export async function patchApplier(incident:Incident,patch:Patch): Promise<Patch
     });
 
     const output = response.output_text;
-
+    console.log(JSON.stringify(output));
     if(!output){
         throw new Error("Empty patch result returned")
     }
