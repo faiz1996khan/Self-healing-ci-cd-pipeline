@@ -21,7 +21,7 @@ export function handleWebhook(rawBody:string,headers:IncomingHttpHeaders):{statu
 
     const event:any = headers["x-github-event"];
 
-    if(event !== "workflow_job"){
+    if(event !== "workflow_run"){
         console.log("Event not processed")
         return {
             statusCode: 200,
@@ -39,7 +39,7 @@ export function handleWebhook(rawBody:string,headers:IncomingHttpHeaders):{statu
         }
     }
 
-    const { workflow_job:workflowRun } = payload;
+    const { workflow_run:workflowRun } = payload;
 
     if(workflowRun.conclusion === "failure"){ 
         console.log( "\nCI FAILURE DETECTED" ); 

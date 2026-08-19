@@ -16,7 +16,7 @@ export function applyFilePatch(file:FilePatch,originalContent:string):AppliedFil
 }
 
 export function applyPatchSet(files:FilePatch[],contents:Map<string,string>):AppliedFile[] {
-    const appliedFile: AppliedFile[] = [];
+    const appliedFiles: AppliedFile[] = [];
 
     for(const file of files){
         const originalContent = contents.get(file.path);
@@ -24,7 +24,7 @@ export function applyPatchSet(files:FilePatch[],contents:Map<string,string>):App
             throw new Error(`Origional content not found for ${file.path}`);
         }
 
-        appliedFile.push(applyFilePatch(file,originalContent));
+        appliedFiles.push(applyFilePatch(file,originalContent));
     }
-    return appliedFile;
+    return appliedFiles;
 }

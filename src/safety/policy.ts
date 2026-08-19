@@ -1,5 +1,5 @@
 import { Diagnosis } from "../models/diagnosis";
-import { RemediationDecision } from "../models/safety";
+import { RemediationDecision } from "../models/remediation";
 
 const AUTO_FIX_CONFIDENCE = 0.90;
 

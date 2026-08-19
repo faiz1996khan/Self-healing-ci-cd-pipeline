@@ -1,5 +1,5 @@
-import { investigate } from "./openai/investigator";
-import { generatePatch } from "./openai/patchGenerator";
+import { investigate } from "./llm-calls/investigator";
+import { generatePatch } from "./llm-calls/patchGenerator";
 import { applyPatchSet } from "./remediation/patcher";
 import { validatePatchPolicy } from "./safety/patchPolicy";
 import { evaluateRemediation } from "./safety/policy";

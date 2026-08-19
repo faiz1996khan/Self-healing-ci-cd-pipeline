@@ -31,3 +31,11 @@ export interface AppliedFile{
     originalContent: string; 
     updatedContent: string; 
 }
+
+export interface PatchApplicationResult{
+    success: boolean;
+    branch: string;
+    commitSha?: string;
+    modifiedFiles: string[];
+    message: string;
+}
