@@ -1,16 +1,24 @@
 import { applyPatch } from "diff";
 import { investigate } from "../llm-calls/investigator";
 import { generatePatch } from "../llm-calls/patchGenerator";
-import { Incident } from "../models/incident";
+import { Incident, IncidentContext } from "../models/incident";
 import { validatePatchPolicy } from "../safety/patchPolicy";
 import { evaluateRemediation } from "../safety/policy";
 import { updateIncident } from "./incident";
 import { applyPatchSet } from "./patcher";
 import { patchApplier } from "../llm-calls/patchApplier";
 
-export async function retryRemediation(incident:Incident):Promise<void>{
+export async function retryRemediation(incident:Incident,workflowRunId:number,commitSha:string,branch:string):Promise<void>{
     console.log(`Retry attempt started ${incident.id}`)
-    const diagnosis = await investigate(incident);
+    const context: IncidentContext = {
+    incidentId: incident.id,
+    repository:incident.repository,
+    workflowRunId,
+    workflowName:incident.workflowName,
+    branch,
+    commitSha
+};
+    const diagnosis = await investigate(context);
     const decision = await evaluateRemediation(diagnosis);
     if(!decision.allowed){
         updateIncident(incident.id,{status:"ESCALATED"})

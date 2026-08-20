@@ -12,3 +12,12 @@ export interface Incident {
     maxAttempt: number;
     createdAt: string;
 }
+
+export interface IncidentContext {
+    incidentId: string;
+    repository: string;
+    workflowRunId: number;
+    workflowName: string;
+    branch: string;
+    commitSha: string;
+}

@@ -1,6 +1,6 @@
 import { WorkflowRunWebhookPayload } from "../models/webhook";
 import { createIncidentId,getIncident,saveIncident, updateIncident } from "./incident";
-import { Incident } from "../models/incident";
+import { Incident, IncidentContext } from "../models/incident";
 import { investigate } from "../llm-calls/investigator";
 import { evaluateRemediation } from "../safety/policy";
 import { generatePatch } from "../llm-calls/patchGenerator";
@@ -47,11 +47,22 @@ export async function processWorkflowRun(payload:WorkflowRunWebhookPayload):Prom
 
     saveIncident(incident);
     console.log(`created incident ${incident.id}`);
+
+    //creating incident context to pass down to inverstigator
+    const context: IncidentContext = {
+        incidentId:incident.id,
+        repository:incident.repository,
+        workflowRunId:incident.workflowRunId,
+        workflowName:incident.workflowName,
+        branch:incident.branch,
+        commitSha:incident.commitSha
+    };
     console.log(`starting investigation`);
 
     updateIncident(incident.id,{status:"INVESTIGATING"});
 
-    const diagnosis = await investigate(incident);
+    //start investigating the issue
+    const diagnosis = await investigate(context);
     console.log(`Diagnosis : ${JSON.stringify(diagnosis)}`);
     const decision = evaluateRemediation(diagnosis);
 
@@ -63,6 +74,7 @@ export async function processWorkflowRun(payload:WorkflowRunWebhookPayload):Prom
 
     updateIncident(incident.id,{status: "PATCHING"});
     console.log('generating patch')
+    //create patch for the issue
     const patch = await generatePatch(diagnosis);
     console.log(JSON.stringify(patch))
     for (const file of patch.files) {
@@ -71,10 +83,10 @@ export async function processWorkflowRun(payload:WorkflowRunWebhookPayload):Prom
     }
     validatePatchPolicy(patch);
     const fileContents = new Map(patch.files.map(file => [file.path,file.originalContent]));
+    //apply patch
     const appliedFiles = applyPatchSet(patch.files,fileContents);
     console.log(`Validated ${appliedFiles.length} files patched.`);
     const result = await patchApplier(incident,patch);
-    //verifyPatchTarget(fileContents.originalContent,fileContents.originalContent);
     console.log(JSON.stringify(result,null,2));
     updateIncident(incident.id,{status:"VALIDATING"});
     console.log(`Waiting for GitHub validation for incident ${incident.id}...`);
@@ -124,7 +136,7 @@ async function handleRemediationWorkflow(incidentId:string,workflowRun:WorkflowR
         };
 
         console.log(`Starting remediation attempt ${nextAttempt}`);
-        await retryRemediation(retryIncident);
+        await retryRemediation(retryIncident,workflowRun.workflow_run.id,workflowRun.workflow_run.head_sha,workflowRun.workflow_run.head_branch);
 
         return;
     }

@@ -3,9 +3,9 @@ import { config } from "../config"
 import { diagnosisSchema } from "../schema/diagnosisSchema";
 import { Diagnosis } from "../models/diagnosis";
 import { validateDiagnosis } from "../validations/validateDiagnosis";
-import { Incident } from "../models/incident";
+import { IncidentContext } from "../models/incident";
 
-export async function investigate(context:Incident): Promise<Diagnosis> {
+export async function investigate(context:IncidentContext): Promise<Diagnosis> {
     const response = await openai.responses.create({
         model: config.openaiModel,
         instructions:`
