@@ -8,6 +8,7 @@ import { validatePatchPolicy } from "../safety/patchPolicy";
 import { applyPatchSet } from "./patcher";
 import { patchApplier } from "../llm-calls/patchApplier";
 import { retryRemediation } from "./retryRemediation";
+import { createRemediationPullRequest } from "../llm-calls/prCreator";
 
 export async function processWorkflowRun(payload:WorkflowRunWebhookPayload):Promise<void>{
     const { workflow_run,repository } = payload;
@@ -108,12 +109,20 @@ async function handleRemediationWorkflow(incidentId:string,workflowRun:WorkflowR
 
     if(workflowRun.workflow_run.conclusion === "success"){
         updateIncident(incidentId,{status:"RECOVERED",workflowRunId:workflowRun.workflow_run.id,commitSha:workflowRun.workflow_run.head_sha,branch:workflowRun.workflow_run.head_branch});
-         console.log("SELF-HEALING SUCCESS\n");
         console.log(`Incident: ${incidentId}`);
-        console.log(`Attempt: ${incident.attempt}`);
-        console.log(`Workflow Run: ${workflowRun.workflow_run.id}`);
-        console.log(`Commit: ${workflowRun.workflow_run.head_sha}`);
-        console.log("Status: RECOVERED");
+        try{
+            const pullRequest = await createRemediationPullRequest(incident);
+            updateIncident(incidentId,{status:"PR_CREATED"});
+            console.log("SELF-HEALING PR CREATED SUCCESSFULLY\n");
+            console.log(`PR: #${pullRequest.pullRequestNumber}`);
+            console.log(`URL: ${pullRequest.pullRequestUrl}`);
+            console.log(`Attempt: ${incident.attempt}`);
+            console.log(`Workflow Run: ${workflowRun.workflow_run.id}`);
+            console.log(`Commit: ${workflowRun.workflow_run.head_sha}`);
+        }catch(error){
+            console.error(`Failed to creare remediation PR`);
+            updateIncident(incidentId,{status:"ESCALATED"});
+        }
         return;
     }
 

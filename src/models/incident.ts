@@ -1,4 +1,4 @@
-export type IncidentStatus = "DETECTED" | "INVESTIGATING" | "PATCHING" | "VALIDATING" | "RECOVERED" | "ESCALATED";
+export type IncidentStatus = "DETECTED" | "INVESTIGATING" | "PATCHING" | "VALIDATING" | "RECOVERED" | "ESCALATED" | "PR_CREATED";
 
 export interface Incident {
     id: string;
