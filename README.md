@@ -69,5 +69,4 @@ Current Scope
 - Bounded retries
 - CI verification
 - Draft PR creation
-
-** Automatic merge intentionally excluded
+- Automatic merge intentionally excluded
